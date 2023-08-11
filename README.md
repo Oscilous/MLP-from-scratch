@@ -1,6 +1,6 @@
 # Multi-Layer Perceptron (MLP) Implementation in MATLAB
 
-The Multi-Layer Perceptron (MLP) is a foundational neural network architecture used for various machine learning tasks. This MATLAB implementation provides a basic framework for constructing and training an MLP.
+The Multi-Layer Perceptron (MLP) is a foundational neural network architecture used for various machine learning tasks. This from scratch MATLAB implementation provides a basic framework for constructing and training an MLP.
 
 ## Table of Contents
 
@@ -13,7 +13,10 @@ The Multi-Layer Perceptron (MLP) is a foundational neural network architecture u
 
 ## Overview
 
-This implementation defines an MLP class in MATLAB, allowing you to create and train a simple multi-layer neural network. The class provides methods for fitting the network to data, performing feedforward computations, and applying a sigmoid activation function.
+This MATLAB implementation provides a basic framework for constructing and training a Multi-Layer Perceptron (MLP) using an Object-Oriented Programming (OOP) approach.
+
+The MLP is a foundational neural network architecture used for various machine learning tasks. In this implementation, the MLP class is defined, allowing you to create and train a simple multi-layer neural network. The class provides methods for fitting the network to data, performing feedforward computations, and applying a sigmoid activation function.
+
 
 ## Usage
 
@@ -23,7 +26,12 @@ To use the MLP class, follow these steps:
 
 2. Ensure that the MLP class file (`MLP.m`) is located in the same directory as your MATLAB script.
 
-3. Open your MATLAB script (e.g., `MLP_from_scratch.m`) and use the MLP class as shown in the example below.
+3. Open your MATLAB script (or example file `main.m`) and use the MLP class.
+
+4. Run your MATLAB script (`main.m`) to see the MLP implementation in action.
+
+**Note:** In the above code, the `addpath(pwd)` command adds the current directory (where `main.m` and `MLP.m` are located) to the MATLAB path. This step allows MATLAB to locate and use the `MLP` class definition. If location of `MLP.m` is changed, make sure to change `addpath(/path/to/MLP)` accordingly.
+
 
 ## Class Structure
 
