@@ -22,9 +22,13 @@ dataset = [
 input_amount = 2;
 output_amount = 1;
 max_iterations = 10;
+learning_rate = 0.5;
 hidden_layer_neurons = 5;
 
 [X_train, y_train, X_test, y_test] = train_test_split(dataset, input_amount, output_amount ,0.8);
 
-myMLP = MLP(hidden_layer_neurons);
-myMLP.fit(X_train, y_train);
+myMLP = MLP(hidden_layer_neurons, learning_rate);
+myMLP = myMLP.fit(X_train, y_train);
+y_pred = myMLP.predict(X_test);
+y_pred
+y_test

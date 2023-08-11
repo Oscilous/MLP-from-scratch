@@ -1,5 +1,6 @@
 classdef MLP
     properties
+        learning_rate
         hidden_layer_size
         ji_weights
         kj_weights
@@ -8,16 +9,18 @@ classdef MLP
         u
         x
         v
-
+        v_pred
     end
 
     methods
         % Constructor
-        function obj = MLP(hidden_layer_neurons)
+        function obj = MLP(hidden_layer_neurons, learning_rate)
             obj.hidden_layer_size = hidden_layer_neurons;
+            obj.learning_rate = learning_rate;
         end
         function obj = fit(obj, X_train, y_train)
             obj.u = X_train;
+            obj.v_pred = y_train;
             
             obj.input_amount = size(X_train, 1);
             obj.output_amount = size(y_train, 1);
@@ -27,8 +30,9 @@ classdef MLP
             
             obj.x = zeros(1, obj.hidden_layer_size);
 
-            %Feed Forward
-            %for cols = 1 : size(obj.u, 1)
+            % Iterate thru whole training set
+            for cols = 1 : size(obj.u, 2)
+                %Feed Forward
                 for hidden_node = 1 : obj.hidden_layer_size
                     sum = 0;
                     for rows = 1:obj.input_amount
@@ -44,7 +48,61 @@ classdef MLP
                     end
                     obj.v(output_node) = Sigmoid_AF(sum);
                 end
-            %end
+
+                % Error gradient for all output neurons
+                for output_node = 1 : obj.output_amount
+                    output_node_error(output_node) = obj.v(output_node)*(1 - obj.v(output_node)) * (obj.v_pred(1) - obj.v(output_node));
+                end
+
+    
+
+                % Error gradient for all hidden neurons
+                for hidden_node = 1 : obj.hidden_layer_size
+                    weighted_error = 0;
+                    for output_node = 1 : obj.output_amount
+                        weighted_error = weighted_error + output_node_error(output_node)* obj.kj_weights(hidden_node, output_node);
+                    end
+                    hidden_node_error(hidden_node) = obj.x(hidden_node) * (1- obj.x(hidden_node)) * weighted_error(output_node);
+                end
+                
+                % Update weights based on error
+                % ji_weights update
+                for hidden_node = 1 : obj.hidden_layer_size
+                    for rows = 1:obj.input_amount
+                         obj.ji_weights(rows, hidden_node) = obj.ji_weights(rows, hidden_node) + obj.learning_rate * hidden_node_error(hidden_node) * obj.u(rows);
+                    end
+                end
+                % kj_weights update
+                for output_node = 1 : obj.output_amount
+                    for rows = 1:obj.hidden_layer_size
+                         obj.kj_weights(rows, output_node) = obj.kj_weights(rows, output_node) + obj.learning_rate * output_node_error(output_node) * obj.x(rows);
+                    end
+                end
+                obj.ji_weights
+                obj.kj_weights
+            end
+        end
+        function prediction = predict(obj, X_test)
+            obj.ji_weights
+            obj.kj_weights
+            for cols = 1 : size(X_test, 2)
+                for hidden_node = 1 : obj.hidden_layer_size
+                    sum = 0;
+                    for rows = 1:obj.input_amount
+                         sum = sum + X_test(rows, 1) * obj.ji_weights(rows, hidden_node);
+                    end
+                    obj.x(hidden_node) = Sigmoid_AF(sum);
+                end
+    
+                for output_node = 1 : obj.output_amount
+                    sum = 0;
+                    for rows = 1:obj.hidden_layer_size
+                         sum = sum + obj.x(1, rows) * obj.kj_weights(rows, output_node);
+                    end
+                    obj.v(output_node) = Sigmoid_AF(sum);
+                end
+                prediction(cols) = obj.v;
+            end
         end
     end
 end
