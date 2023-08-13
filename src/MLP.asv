@@ -61,7 +61,7 @@ classdef MLP
     
 
                 % Error gradient for all hidden neurons
-                for hidden_node = 1 : obj.hidden_layer_size + 1
+                for hidden_node = 1 : obj.hidden_layer_size
                     weighted_error = 0;
                     for output_node = 1 : obj.output_amount
                         weighted_error = weighted_error + output_node_error(output_node)* obj.kj_weights(hidden_node, output_node);
@@ -72,13 +72,13 @@ classdef MLP
                 % Update weights based on error
                 % ji_weights update
                 for hidden_node = 1 : obj.hidden_layer_size
-                    for rows = 1:obj.input_amount + 1
+                    for rows = 1:obj.input_amount
                          obj.ji_weights(rows, hidden_node) = obj.ji_weights(rows, hidden_node) + obj.learning_rate * hidden_node_error(hidden_node) * obj.u(rows);
                     end
                 end
                 % kj_weights update
                 for output_node = 1 : obj.output_amount
-                    for rows = 1:obj.hidden_layer_size + 1
+                    for rows = 1:obj.hidden_layer_size
                          obj.kj_weights(rows, output_node) = obj.kj_weights(rows, output_node) + obj.learning_rate * output_node_error(output_node) * obj.x(rows);
                     end
                 end
