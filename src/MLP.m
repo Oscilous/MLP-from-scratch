@@ -33,6 +33,7 @@ classdef MLP
             obj.x = [obj.x -1];
             plot_error = [];
             i = 0;
+
             for iteration = 1 : iterations
                 % Iterate thru whole training set
                 for cols = 1 : size(obj.u, 2)
@@ -56,7 +57,7 @@ classdef MLP
     
                     % Error gradient for all output neurons
                     for output_node = 1 : obj.output_amount
-                        output_node_error(output_node) = obj.v(output_node)*(1 - obj.v(output_node)) * (obj.v_pred(1) - obj.v(output_node));
+                        output_node_error(output_node) = obj.v(output_node) * (1 - obj.v(output_node)) * (obj.v_pred(cols) - obj.v(output_node));
                     end
                     plot_error = [plot_error, i++ output_node_error];
         
@@ -65,7 +66,7 @@ classdef MLP
                     for hidden_node = 1 : obj.hidden_layer_size + 1
                         weighted_error = 0;
                         for output_node = 1 : obj.output_amount
-                            weighted_error = weighted_error + output_node_error(output_node)* obj.kj_weights(hidden_node, output_node);
+                            weighted_error = weighted_error + output_node_error(output_node) * obj.kj_weights(hidden_node, output_node);
                         end
                         hidden_node_error(hidden_node) = obj.x(hidden_node) * (1- obj.x(hidden_node)) * weighted_error(output_node);
                     end
@@ -83,7 +84,6 @@ classdef MLP
                              obj.kj_weights(rows, output_node) = obj.kj_weights(rows, output_node) + obj.learning_rate * output_node_error(output_node) * obj.x(rows);
                         end
                     end
-                    obj.v
                 end
             end
             plot(plot_error);
